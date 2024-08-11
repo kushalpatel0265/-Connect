@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landing Page</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="flex items-center justify-center h-screen bg-gray-100">
+    <div class="text-center">
+        <h1 class="text-4xl font-bold mb-4">Welcome to Our Platform</h1>
+        <p class="text-xl mb-8">Please login to access your dashboard</p>
+        <button id="loginButton" class="px-4 py-2 bg-blue-500 text-white rounded">Login</button>
+    </div>
+
+    <script type="module">
+        import Clerk from "@clerk/clerk-js";
+
+        const clerkPubKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+
+        if (!clerkPubKey) {
+            throw new Error("Add your VITE_CLERK_PUBLISHABLE_KEY to .env file");
+        }
+
+        const clerk = new Clerk(clerkPubKey);
+        await clerk.load();
+
+        // Check if the user is logged in
+        if (clerk.user) {
+            // User is logged in, redirect to the dashboard
+            window.location.href = "/dashboard.html";
+        } else {
+            // User is not logged in, stay on the landing page
+            document.getElementById("loginButton").addEventListener("click", () => {
+                clerk.openSignIn({ redirectUrl: "/dashboard.html" });
+            });
+        }
+    </script>
+</body>
+</html>
