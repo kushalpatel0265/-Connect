@@ -11,11 +11,11 @@ await clerk.load();
 
 if (clerk.user) {
   // User is logged in, show the dashboard
-  document.getElementById("user-button-container").innerHTML = `
-    <div id="user-button"></div>
-  `;
+  const userButtonContainer = document.getElementById("user-button-container");
+  const userButtonDiv = document.createElement("div");
+  userButtonDiv.id = "user-button";
+  userButtonContainer.appendChild(userButtonDiv);
 
-  const userButtonDiv = document.getElementById("user-button");
   clerk.mountUserButton(userButtonDiv);
 } else {
   // User is not logged in, redirect to the landing page
